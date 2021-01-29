@@ -8,19 +8,46 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        NavigationView{
-            List {
-                Text("First Thing")
-                Text("Second Thing")
-                Text("Third Thing")
-                Text("Fourth Thing")
-                Text("Fifth Thing")
-            }
-        }
-    }
-}
 
+    @State var things = ["First Thing", "Second Thing", "Third Thing", "Fourth Thing", "Fifth Thing"]
+
+    
+
+    var body: some View {
+
+        NavigationView {
+
+            List {
+
+                ForEach(things, id: \.self) { thing in
+
+                    Text(thing)
+
+                }
+
+                .onMove(perform: { indices, newOffset in
+
+                    things.move(fromOffsets: indices, toOffset: newOffset)
+
+                })
+
+                .onDelete(perform: { indexSet in
+
+                    things.remove(atOffsets: indexSet)
+
+                })
+
+            }
+
+            .navigationBarTitle("Things")
+
+            .navigationBarItems(leading: EditButton())
+
+        }
+
+    }
+
+}
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
